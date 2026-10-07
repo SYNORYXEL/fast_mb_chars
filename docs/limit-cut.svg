@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="300" viewBox="0 0 880 300" role="img" aria-labelledby="title desc">
+  <title id="title">fast_mb_chars cuts on a character boundary</title>
+  <desc id="desc">The byte limit lands inside a UTF-8 letter. The gem keeps the whole character instead of splitting it.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f6f8fa; }
+      .card { fill: #ffffff; stroke: #d0d7de; }
+      .ink { fill: #1f2328; }
+      .muted { fill: #656d76; }
+      .line { stroke: #d0d7de; }
+      .keep { fill: #1a7f37; }
+      .drop { fill: #cf222e; }
+      .accent { fill: #cf222e; }
+      .chip { fill: #fff8f8; stroke: #ffcecb; }
+      .cell { fill: #ffffff; stroke: #d0d7de; }
+      .cell-keep { fill: #dafbe1; stroke: #4ac26b; }
+      .cell-cut { fill: #fff8c5; stroke: #d4a72c; }
+      @media (prefers-color-scheme: dark) {
+        .bg { fill: #0d1117; }
+        .card { fill: #161b22; stroke: #30363d; }
+        .ink { fill: #e6edf3; }
+        .muted { fill: #8b949e; }
+        .line { stroke: #30363d; }
+        .keep { fill: #3fb950; }
+        .drop { fill: #f85149; }
+        .accent { fill: #f85149; }
+        .chip { fill: #3d1619; stroke: #6e2b2f; }
+        .cell { fill: #0d1117; stroke: #30363d; }
+        .cell-keep { fill: #12261e; stroke: #238636; }
+        .cell-cut { fill: #2a2111; stroke: #9e6a03; }
+      }
+    </style>
+  </defs>
+  <rect class="bg" width="880" height="300" rx="16"/>
+  <rect class="card" x="16" y="16" width="848" height="268" rx="12"/>
+
+  <text class="ink" x="40" y="52" font-family="ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="700">limit looks at the cut, not the whole string</text>
+  <text class="muted" x="40" y="76" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13">ASCII and UTF-8 &#x2014; characters stay whole</text>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">
+    <rect class="cell" x="40" y="104" width="44" height="44" rx="8"/>
+    <text class="ink" x="62" y="131" text-anchor="middle">a</text>
+    <rect class="cell" x="90" y="104" width="44" height="44" rx="8"/>
+    <text class="ink" x="112" y="131" text-anchor="middle">a</text>
+    <rect class="cell" x="140" y="104" width="44" height="44" rx="8"/>
+    <text class="ink" x="162" y="131" text-anchor="middle">a</text>
+    <rect class="cell-cut" x="190" y="104" width="44" height="44" rx="8"/>
+    <text class="ink" x="212" y="131" text-anchor="middle">a</text>
+    <rect class="cell-keep" x="240" y="104" width="92" height="44" rx="8"/>
+    <text class="keep" x="286" y="131" text-anchor="middle" font-weight="700">&#x44F;</text>
+    <rect class="cell" x="338" y="104" width="44" height="44" rx="8"/>
+    <text class="muted" x="360" y="131" text-anchor="middle">&#x2026;</text>
+  </g>
+
+  <path class="line" d="M234 156 v18" fill="none" stroke-width="2"/>
+  <text class="accent" x="234" y="196" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700">byte limit</text>
+  <text class="muted" x="234" y="214" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11">inside the letter</text>
+
+  <rect class="chip" x="430" y="104" width="400" height="108" rx="10"/>
+  <text class="drop" x="450" y="132" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="700">Rails scan</text>
+  <text class="muted" x="450" y="152" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12">walks graphemes from byte 0 &#x2192; drops &#x44F;</text>
+  <text class="keep" x="450" y="180" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="700">fast_mb_chars</text>
+  <text class="muted" x="450" y="200" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12">reads the two bytes on the boundary &#x2192; keeps &#x44F;</text>
+
+  <text class="muted" x="40" y="256" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">('a' * (limit - 1)) + '&#x44F;'   &#x2192;   1 extra byte, letter intact</text>
+</svg>

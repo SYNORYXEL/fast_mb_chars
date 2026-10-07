@@ -1,0 +1,6 @@
+*.gem
+/pkg/
+/.bundle/
+/coverage/
+/benchmark/results.md
+/Gemfile.lock
