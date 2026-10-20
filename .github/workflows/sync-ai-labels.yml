@@ -1,0 +1,54 @@
+name: sync-ai-labels
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-ai-labels.yml'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create AI contribution labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = [
+              { name: 'AI-100', color: 'd73a4a', description: '100% AI-generated' },
+              { name: 'AI-MOSTLY', color: 'e99695', description: 'Mostly AI-generated (>50%)' },
+              { name: 'AI-PARTIAL', color: 'f9d0c4', description: 'Partially AI-generated (≤50%)' },
+              { name: 'AI-ASSISTED', color: 'fef2c0', description: 'AI-assisted, primarily human-written' },
+              { name: 'HUMAN', color: '0e8a16', description: '100% human-written' },
+              { name: 'OTHER', color: 'cfd3d7', description: 'Other / Not sure' },
+            ];
+            const existing = await github.paginate(
+              github.rest.issues.listLabelsForRepo,
+              { owner: context.repo.owner, repo: context.repo.repo }
+            );
+            const byName = new Map(existing.map((l) => [l.name, l]));
+            for (const label of labels) {
+              if (byName.has(label.name)) {
+                await github.rest.issues.updateLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                  color: label.color,
+                  description: label.description,
+                });
+                console.log(`updated ${label.name}`);
+              } else {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                  color: label.color,
+                  description: label.description,
+                });
+                console.log(`created ${label.name}`);
+              }
+            }
