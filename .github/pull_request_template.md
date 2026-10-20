@@ -11,6 +11,10 @@ Select **one** label on the right → **Labels**:
 | `HUMAN` | 100% human-written |
 | `OTHER` | Other / Not sure |
 
+<!-- ai-contribution-selected -->
+**Selected:** _none yet — pick a label on the right_
+<!-- /ai-contribution-selected -->
+
 ## Description
 
 <!-- Briefly describe the changes -->
