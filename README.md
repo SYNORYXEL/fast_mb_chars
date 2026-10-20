@@ -183,3 +183,5 @@ This gem is new. If something would make it more useful in your app — a missin
 ## 📄 License
 
 MIT. See [LICENSE](LICENSE).
+
+<!-- test: AI label PR flow -->
